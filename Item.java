@@ -17,19 +17,31 @@ public class Item {
         return description;
     }
 
+    public boolean isUsable() {
+        return isUsable;
+    }
+
+    public void inspect() {
+        System.out.println("Item: " + name);
+        System.out.println("Description: " + description);
+    }
+
     public void use() {
         if (isUsable) {
             switch (name.toLowerCase()) {
                 case "crown of foresight":
-                    System.out.println("You feel a wave of clarity wash over you as visions of possible futures unfold.");
-                    // Additional logic specific to the Crown of Foresight can go here
+                    System.out.println("A wave of clarity washes over you as visions of possible outcomes reveal themselves.");
+                    // Additional logic for Crown of Foresight
+                    break;
+                case "ancient key":
+                    System.out.println("The ancient key glows faintly as it fits into a mysterious lock.");
+                    // Additional logic for Ancient Key
                     break;
                 default:
                     System.out.println("You used the " + name + ".");
-                    // Add any default item usage logic here if needed
             }
         } else {
-            System.out.println("This item cannot be used.");
+            System.out.println("The " + name + " cannot be used right now.");
         }
     }
 }
