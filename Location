@@ -1,40 +1,63 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Location {
-    private String name;
-    private String description;
-    private List<Item> itemsHere;
+    private String name; // Name of the location
+    private String description; // Description of the location
+    private List<Item> itemsHere; // List of items in this location
 
+    // Constructor with null-check for itemsHere
+    public Location(String name, String description, List<Item> itemsHere) {
+        this.name = name;
+        this.description = description;
+        this.itemsHere = (itemsHere != null) ? itemsHere : new ArrayList<>();
+    }
+
+    // Alternate Constructor: Initializes with an empty itemsHere list
     public Location(String name, String description) {
         this.name = name;
         this.description = description;
         this.itemsHere = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Retrieves and removes an item from the location by name.
+     * @param itemName The name of the item to retrieve.
+     * @return The item if found, or null if not found.
+     */
+    public Item getItem(String itemName) {
+        for (Item item : itemsHere) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                itemsHere.remove(item); // Removes the item from the list
+                return item; // Returns the found item
+            }
+        }
+        System.out.println("Item not found.");
+        return null; // Returns null if the item is not found
     }
 
-    public String getDescription() {
-        return description;
-    }
-
+    /**
+     * Adds an item to the location.
+     * @param item The item to add.
+     */
     public void addItem(Item item) {
         itemsHere.add(item);
     }
 
-    public Item getItem(String itemName) {
-        for (Item item : itemsHere) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                itemsHere.remove(item);
-                return item;
+    /**
+     * Displays the location details.
+     */
+    public void enterLocation() {
+        System.out.println("You have entered " + name + ".");
+        System.out.println(description);
+        if (itemsHere.isEmpty()) {
+            System.out.println("There are no items here.");
+        } else {
+            System.out.println("You see the following items:");
+            for (Item item : itemsHere) {
+                System.out.println("- " + item.getName());
             }
         }
-        return null;
-    }
-
-    public boolean hasItem(String itemName) {
-        return itemsHere.stream().anyMatch(item -> item.getName().equalsIgnoreCase(itemName));
     }
 }
+
