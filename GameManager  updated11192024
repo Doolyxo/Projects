@@ -104,25 +104,36 @@ public class GameManager {
     }
 
     private void processCommand(String command, Scanner scanner) {
-        switch (command.toLowerCase()) {
-            case "travel":
-                System.out.println("Where would you like to travel?");
-                System.out.println("Available locations: " + locations.keySet());
-                String destination = scanner.nextLine().toLowerCase();
-                if (locations.containsKey(destination)) {
-                    currentLocation = locations.get(destination);
-                    currentLocation.enterLocation(); // Display details of the new location
-                } else {
-                    System.out.println("Unknown location. Please choose a valid destination.");
-                }
-                break;
-            // Add other commands as needed (e.g., rest, investigate ruins, etc.)
-            case "quit":
-                isGameRunning = false;
-                System.out.println("Thank you for playing!");
-                break;
-            default:
-                System.out.println("Unknown command.");
-        }
+    switch (command.toLowerCase()) {
+        case "travel":
+            System.out.println("Where would you like to travel?");
+            System.out.println("Available locations: " + locations.keySet());
+            String destination = scanner.nextLine().toLowerCase();
+            if (locations.containsKey(destination)) {
+                currentLocation = locations.get(destination);
+                currentLocation.enterLocation(); // Display details of the new location
+            } else {
+                System.out.println("Unknown location. Please choose a valid destination.");
+            }
+            break;
+
+        case "rest":
+            if (currentLocation.getName().equalsIgnoreCase("Oasis of Isolde")) {
+                System.out.println("You rest by the crystal-clear waters and feel your strength returning.");
+                player.heal(20); // This requires a heal method in Player
+            } else {
+                System.out.println("You can only rest at the Oasis of Isolde.");
+            }
+            break;
+
+        case "quit":
+            isGameRunning = false;
+            System.out.println("Thank you for playing!");
+            break;
+
+        default:
+            System.out.println("Unknown command.");
     }
+}
+
 }
