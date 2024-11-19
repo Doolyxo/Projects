@@ -1,0 +1,156 @@
+import java.util.Scanner;
+
+public class GameManager {
+    private Player player;
+    private boolean isGameRunning;
+    private boolean ritualPerformed;
+    private boolean entityDefeated;
+    private boolean ruinsInvestigated;
+    private Creature helio;
+    private Creature mylo;
+
+    public GameManager() {
+        player = new Player("Queen Elara", 100);
+        isGameRunning = true;
+        ritualPerformed = false;
+        entityDefeated = false;
+        ruinsInvestigated = false;
+
+        // Initialize Helio with interaction phrases
+        helio = new Creature("Helio Umetris", "A wise adviser skilled in elemental magic.",
+                new String[] {
+                    "Stay vigilant; the ruins are full of hidden dangers.",
+                    "Use your strength wisely, Elara. It will guide us to victory.",
+                    "The entity is restless; we must act soon."
+                });
+
+        // Initialize Mylo with interaction phrases
+        mylo = new Creature("Mylo Yasujiro", "A visiting dignitary with vast knowledge of the world.",
+                new String[] {
+                    "These ruins are treacherous, but their mysteries call to us. Stay vigilant—one wrong step and we'll be just another story lost to the sands.",
+                    "I've seen places like this before. Stay alert.",
+                    "If we make it through this, stories of this day will be legendary."
+                });
+    }
+
+    public void startGame() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Welcome to Desert Kings and Secrets!");
+            System.out.println("You are Queen Elara, ruler of Aridia, tasked with saving your kingdom.");
+            showMenu(); // Display the command menu at the start of the game
+
+            while (isGameRunning) {
+                System.out.print("Enter command: ");
+                String command = scanner.nextLine();
+                processCommand(command);
+            }
+        }
+    }
+
+    private void showMenu() {
+        System.out.println("\nAvailable Commands:");
+        if (!ruinsInvestigated) {
+            System.out.println("- investigate ruins: Search the ancient ruins for clues and items.");
+        }
+        if (!ritualPerformed) {
+            System.out.println("- perform ritual: Begin a powerful ritual to prepare for the battle.");
+        }
+        if (ruinsInvestigated && ritualPerformed) {
+            System.out.println("- attack ancient entity: Attempt to defeat the ancient entity.");
+        }
+        System.out.println("- consult with helio: Seek advice from Helio.");
+        System.out.println("- consult with mylo: Seek Mylo's perspective on the situation.");
+        System.out.println("- use crown foresight: Use the Crown of Foresight if available.");
+        System.out.println("- menu or help: Show this list of commands.");
+        System.out.println("- quit: Exit the game.\n");
+    }
+
+    private void processCommand(String command) {
+        switch (command.toLowerCase()) {
+            case "investigate ruins":
+                if (!ruinsInvestigated) {
+                    System.out.println("You search the ancient ruins...");
+                    player.investigateRuins();
+                    ruinsInvestigated = true;
+                } else {
+                    System.out.println("You have already investigated the ruins.");
+                }
+                break;
+            case "perform ritual":
+                if (!ritualPerformed) {
+                    System.out.println("You begin a powerful ritual...");
+                    player.performRitual();
+                    ritualPerformed = true;
+                    System.out.println("The ritual has been completed successfully.");
+                } else {
+                    System.out.println("You have already performed the ritual.");
+                }
+                break;
+            case "attack ancient entity":
+                if (!ritualPerformed || !ruinsInvestigated) {
+                    System.out.println("You are not ready to face the entity. Investigate the ruins and perform the ritual first!");
+                } else {
+                    System.out.println("You attack the ancient entity...");
+                    player.attackEntity();
+                    entityDefeated = true;
+                    displayEnding("kingdomSaved");
+                }
+                break;
+            case "consult with helio":
+                System.out.println("Helio looks at you thoughtfully.");
+                helio.interact();
+                break;
+            case "consult with mylo":
+                System.out.println("Mylo nods and shares his perspective.");
+                mylo.interact();
+                break;
+            case "use crown foresight":
+                if (player.hasItem("Crown of Foresight")) {
+                    player.useItem("Crown of Foresight");
+                    System.out.println("You glimpse possible future outcomes.");
+                } else {
+                    System.out.println("You don't have the Crown of Foresight.");
+                }
+                break;
+            case "menu":
+            case "help":
+                showMenu();
+                break;
+            case "quit":
+                isGameRunning = false;
+                System.out.println("Thank you for playing!");
+                break;
+            default:
+                System.out.println("Unknown command. Type 'menu' or 'help' to see available commands.");
+        }
+    }
+
+    private void displayEnding(String endingType) {
+        switch (endingType) {
+            case "kingdomSaved":
+                System.out.println("\nEnding: The Kingdom Saved");
+                System.out.println("Elara successfully defeats the ancient entity. The kingdom thrives, and her people honor her as a hero.");
+                if (ritualPerformed) {
+                    System.out.println("Her mastery of rituals was key to her success.");
+                }
+                if (ruinsInvestigated) {
+                    System.out.println("The secrets of the ruins revealed the key to victory.");
+                }
+                break;
+            case "fallOfAridia":
+                System.out.println("\nEnding: The Fall of Aridia");
+                System.out.println("Elara fails to realize her potential. The entity takes over, and the kingdom falls into ruin, forgotten by the world.");
+                break;
+            default:
+                System.out.println("Unknown ending.");
+        }
+        isGameRunning = false; // Ends the game
+    }
+
+    public static void main(String[] args) {
+        GameManager game = new GameManager();
+        game.startGame();
+    }
+}
+
+   
