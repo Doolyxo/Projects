@@ -135,5 +135,9 @@ public class GameManager {
             System.out.println("Unknown command.");
     }
 }
+ public static void main(String[] args) {
+        GameManager game = new GameManager();
+        game.startGame();
+    }
 
 }
