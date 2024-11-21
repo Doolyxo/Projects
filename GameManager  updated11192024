@@ -108,7 +108,12 @@ public class GameManager {
         case "travel":
             System.out.println("Where would you like to travel?");
             System.out.println("Available locations: " + locations.keySet());
-            String destination = scanner.nextLine().toLowerCase();
+            
+            // Clear the buffer in case there’s an extra newline character
+            scanner.nextLine();  // Read and discard any leftover newline
+            
+            String destination = scanner.nextLine().toLowerCase();  // Read destination input
+            
             if (locations.containsKey(destination)) {
                 currentLocation = locations.get(destination);
                 currentLocation.enterLocation(); // Display details of the new location
