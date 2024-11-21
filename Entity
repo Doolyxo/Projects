@@ -3,7 +3,7 @@ public class Entity {
     private int health;
     private int attackPower;
 
-    public Entity(String name, int heakth, int attackPower){
+    public Entity(String name, int health, int attackPower){
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
