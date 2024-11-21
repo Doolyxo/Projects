@@ -20,6 +20,16 @@ public class Location {
         this.itemsHere = new ArrayList<>();
     }
 
+    // Getter for the name of the location
+    public String getName() {
+        return name;
+    }
+
+    // Getter for the description of the location
+    public String getDescription() {
+        return description;
+    }
+
     /**
      * Retrieves and removes an item from the location by name.
      * @param itemName The name of the item to retrieve.
@@ -48,10 +58,10 @@ public class Location {
      * Displays the location details.
      */
     public void enterLocation() {
-    if (this == null) { // check if the location is not null
-         System.out.println("Error: Current location is not valid.");
-         return;
-}
+        if (name == null || description == null) { // Check if the location details are valid
+            System.out.println("Error: Current location is not valid.");
+            return;
+        }
 
         System.out.println("You have entered " + name + ".");
         System.out.println(description);
