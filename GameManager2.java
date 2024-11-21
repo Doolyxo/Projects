@@ -21,35 +21,38 @@ public class GameManager {
         initializeLocations();
 
         // Initialize Helio with interaction phrases
-        helio = new Character("Helio Umetris", "A wise adviser skilled in elemental magic.",
+        helio = new Character("Helio Umetris", 100, "A wise adviser skilled in elemental magic.",
                 new String[] {
-                    "Stay vigilant; the ruins are full of hidden dangers.",
-                    "Use your strength wisely, Elara. It will guide us to victory.",
-                    "The entity is restless; we must act soon."
+                        "Stay vigilant; the ruins are full of hidden dangers.",
+                        "Use your strength wisely, Elara. It will guide us to victory.",
+                        "The entity is restless; we must act soon."
                 });
 
         // Initialize Mylo with interaction phrases
-        mylo = new Character("Mylo Yasujiro", "A visiting dignitary with vast knowledge of the world.",
+        mylo = new Character("Mylo Yasujiro", 100, "A visiting dignitary with vast knowledge of the world.",
                 new String[] {
-                    "These ruins are treacherous, but their mysteries call to us. Stay vigilant—one wrong step and we'll be just another story lost to the sands.",
-                    "I've seen places like this before. Stay alert.",
-                    "If we make it through this, stories of this day will be legendary."
+                        "These ruins are treacherous, but their mysteries call to us. Stay vigilant—one wrong step and we'll be just another story lost to the sands.",
+                        "I've seen places like this before. Stay alert.",
+                        "If we make it through this, stories of this day will be legendary."
                 });
     }
 
     private void initializeLocations() {
         locations = new HashMap<>();
 
+        // Define locations
         Location royalPalace = new Location("Royal Palace", "The center of the kingdom, where political decisions are made.");
         Location oasisOfIsolde = new Location("Oasis of Isolde", "A sanctuary of life amidst the arid desert.");
         Location eternalDunes = new Location("Eternal Dunes", "The vast deserts of Aridia.");
         Location desertRuins = new Location("Undiscovered Desert Ruins", "Hidden throughout the desert, these ruins contain artifacts.");
 
+        // Add locations to the map
         locations.put("royal palace", royalPalace);
         locations.put("oasis of isolde", oasisOfIsolde);
         locations.put("eternal dunes", eternalDunes);
         locations.put("desert ruins", desertRuins);
 
+        // Set initial location
         currentLocation = royalPalace;
     }
 
@@ -89,8 +92,8 @@ public class GameManager {
         switch (command.toLowerCase()) {
             case "travel":
                 if (currentLocation == null) {
-                    Sysem.out.printlm(" Error: Current location is not set.");
-                     break;
+                    System.out.println("Error: Current location is not set.");
+                    break;
                 }
                 System.out.println("Where would you like to travel?");
                 System.out.println("Available locations: " + locations.keySet());
@@ -114,14 +117,14 @@ public class GameManager {
                 }
                 break;
 
-             case "rest":
-            if (currentLocation != null && currentLocation.getName().equalsIgnoreCase("Oasis of Isolde")) {
-                System.out.println("You rest by the crystal-clear waters and feel your strength returning.");
-                player.heal(20); // This requires a heal method in Player
-            } else {
-                System.out.println("You can only rest at the Oasis of Isolde.");
-            }
-            break;
+            case "rest":
+                if (currentLocation != null && currentLocation.getName().equalsIgnoreCase("Oasis of Isolde")) {
+                    System.out.println("You rest by the crystal-clear waters and feel your strength returning.");
+                    player.heal(20);
+                } else {
+                    System.out.println("You can only rest at the Oasis of Isolde.");
+                }
+                break;
 
             case "perform ritual":
                 if (!ritualPerformed) {
@@ -140,4 +143,19 @@ public class GameManager {
                 } else {
                     System.out.println("You attack the ancient entity...");
                     player.attackEntity();
-                    entityDefeated
+                    entityDefeated = true;
+                    System.out.println("The ancient entity has been defeated! You have saved the kingdom!");
+                }
+                break;
+
+            case "quit":
+                isGameRunning = false;
+                System.out.println("Thank you for playing!");
+                break;
+
+            default:
+                System.out.println("Unknown command.");
+                break;
+        }
+    }
+}
