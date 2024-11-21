@@ -48,6 +48,11 @@ public class Location {
      * Displays the location details.
      */
     public void enterLocation() {
+    if (this == null) { // check if the location is not null
+         System.out.println("Error: Current location is not valid.");
+         return;
+}
+
         System.out.println("You have entered " + name + ".");
         System.out.println(description);
         if (itemsHere.isEmpty()) {
