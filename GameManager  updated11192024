@@ -67,6 +67,7 @@ public class GameManager {
         locations.put("eternal dunes", eternalDunes);
         locations.put("desert ruins", desertRuins);
 
+
         // Set initial location
         currentLocation = royalPalace;
     }
@@ -113,6 +114,7 @@ public class GameManager {
             scanner.nextLine();  // Read and discard any leftover newline
             
             String destination = scanner.nextLine().toLowerCase();  // Read destination input
+            System.out.println("User entered: " + destination);
             
             if (locations.containsKey(destination)) {
                 currentLocation = locations.get(destination);
