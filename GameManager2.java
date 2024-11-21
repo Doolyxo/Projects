@@ -6,8 +6,8 @@ public class GameManager {
     private boolean ritualPerformed;
     private boolean entityDefeated;
     private boolean ruinsInvestigated;
-    private Creature helio;
-    private Creature mylo;
+    private Character helio;
+    private Character mylo;
     private Map<String, Location> locations;
     private Location currentLocation;
 
@@ -21,7 +21,7 @@ public class GameManager {
         initializeLocations();
 
         // Initialize Helio with interaction phrases
-        helio = new Creature("Helio Umetris", "A wise adviser skilled in elemental magic.",
+        helio = new Character("Helio Umetris", "A wise adviser skilled in elemental magic.",
                 new String[] {
                     "Stay vigilant; the ruins are full of hidden dangers.",
                     "Use your strength wisely, Elara. It will guide us to victory.",
@@ -29,7 +29,7 @@ public class GameManager {
                 });
 
         // Initialize Mylo with interaction phrases
-        mylo = new Creature("Mylo Yasujiro", "A visiting dignitary with vast knowledge of the world.",
+        mylo = new Character("Mylo Yasujiro", "A visiting dignitary with vast knowledge of the world.",
                 new String[] {
                     "These ruins are treacherous, but their mysteries call to us. Stay vigilant—one wrong step and we'll be just another story lost to the sands.",
                     "I've seen places like this before. Stay alert.",
