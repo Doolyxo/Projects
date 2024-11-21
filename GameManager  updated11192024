@@ -40,42 +40,23 @@ public class GameManager {
     private void initializeLocations() {
         locations = new HashMap<>();
 
-        // Define locations
-        Location royalPalace = new Location(
-            "Royal Palace",
-            "The center of the kingdom, where political decisions are made. It serves as Elara's headquarters for planning and gathering information."
-        );
+        Location royalPalace = new Location("Royal Palace", "The center of the kingdom, where political decisions are made.");
+        Location oasisOfIsolde = new Location("Oasis of Isolde", "A sanctuary of life amidst the arid desert.");
+        Location eternalDunes = new Location("Eternal Dunes", "The vast deserts of Aridia.");
+        Location desertRuins = new Location("Undiscovered Desert Ruins", "Hidden throughout the desert, these ruins contain artifacts.");
 
-        Location oasisOfIsolde = new Location(
-            "Oasis of Isolde",
-            "Named after Queen Elara’s mother, this magnificent oasis is a sanctuary of life amidst the arid desert. Palm trees sway gently around crystal-clear waters, and exotic flora and fauna thrive in this verdant haven. It is said that the waters of Isolde have healing properties, blessed by the kingdom’s ancient deities."
-        );
-
-        Location eternalDunes = new Location(
-            "Eternal Dunes",
-            "The vast deserts of Aridia are both beautiful and deadly. These endless dunes shift with the winds, creating an ever-changing landscape that can easily disorient even the most seasoned traveler. Hidden within the sands are ancient ruins and lost treasures, remnants of civilizations long past."
-        );
-
-        Location desertRuins = new Location(
-            "Undiscovered Desert Ruins",
-            "Hidden throughout the desert, these ruins contain artifacts and knowledge that may reveal secrets about the ancient entity."
-        );
-
-        // Add locations to the map
         locations.put("royal palace", royalPalace);
         locations.put("oasis of isolde", oasisOfIsolde);
         locations.put("eternal dunes", eternalDunes);
         locations.put("desert ruins", desertRuins);
 
-
-        // Set initial location
         currentLocation = royalPalace;
     }
 
     public void startGame() {
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Welcome to Desert Kings and Secrets!");
-            currentLocation.enterLocation(); // Show the initial location description
+            currentLocation.enterLocation();
             showMenu();
 
             while (isGameRunning) {
@@ -105,46 +86,45 @@ public class GameManager {
     }
 
     private void processCommand(String command, Scanner scanner) {
-    switch (command.toLowerCase()) {
-        case "travel":
-            System.out.println("Where would you like to travel?");
-            System.out.println("Available locations: " + locations.keySet());
-            
-            // Clear the buffer in case there’s an extra newline character
-            scanner.nextLine();  // Read and discard any leftover newline
-            
-            String destination = scanner.nextLine().toLowerCase();  // Read destination input
-            System.out.println("User entered: " + destination);
-            
-            if (locations.containsKey(destination)) {
-                currentLocation = locations.get(destination);
-                currentLocation.enterLocation(); // Display details of the new location
-            } else {
-                System.out.println("Unknown location. Please choose a valid destination.");
-            }
-            break;
+        switch (command.toLowerCase()) {
+            case "travel":
+                System.out.println("Where would you like to travel?");
+                System.out.println("Available locations: " + locations.keySet());
+                String destination = scanner.nextLine().toLowerCase();
+                if (locations.containsKey(destination)) {
+                    currentLocation = locations.get(destination);
+                    currentLocation.enterLocation();
+                } else {
+                    System.out.println("Unknown location.");
+                }
+                break;
 
-        case "rest":
-            if (currentLocation.getName().equalsIgnoreCase("Oasis of Isolde")) {
-                System.out.println("You rest by the crystal-clear waters and feel your strength returning.");
-                player.heal(20); // This requires a heal method in Player
-            } else {
-                System.out.println("You can only rest at the Oasis of Isolde.");
-            }
-            break;
+            case "investigate ruins":
+                if (!ruinsInvestigated) {
+                    System.out.println("You search the ancient ruins...");
+                    player.investigateRuins();
+                    ruinsInvestigated = true;
+                    System.out.println("The ruins are now investigated.");
+                } else {
+                    System.out.println("You have already investigated the ruins.");
+                }
+                break;
 
-        case "quit":
-            isGameRunning = false;
-            System.out.println("Thank you for playing!");
-            break;
+            case "perform ritual":
+                if (!ritualPerformed) {
+                    System.out.println("You begin a powerful ritual...");
+                    player.performRitual();
+                    ritualPerformed = true;
+                    System.out.println("The ritual has been completed.");
+                } else {
+                    System.out.println("You have already performed the ritual.");
+                }
+                break;
 
-        default:
-            System.out.println("Unknown command.");
-    }
-}
- public static void main(String[] args) {
-        GameManager game = new GameManager();
-        game.startGame();
-    }
-
-}
+            case "attack ancient entity":
+                if (!ruinsInvestigated || !ritualPerformed) {
+                    System.out.println("You are not ready to face the entity. Investigate the ruins and perform the ritual first!");
+                } else {
+                    System.out.println("You attack the ancient entity...");
+                    player.attackEntity();
+                    entityDefeated
