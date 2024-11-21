@@ -88,6 +88,10 @@ public class GameManager {
     private void processCommand(String command, Scanner scanner) {
         switch (command.toLowerCase()) {
             case "travel":
+                if (currentLocation == null) {
+                    Sysem.out.printlm(" Error: Current location is not set.");
+                     break;
+                }
                 System.out.println("Where would you like to travel?");
                 System.out.println("Available locations: " + locations.keySet());
                 String destination = scanner.nextLine().toLowerCase();
@@ -109,6 +113,15 @@ public class GameManager {
                     System.out.println("You have already investigated the ruins.");
                 }
                 break;
+
+             case "rest":
+            if (currentLocation != null && currentLocation.getName().equalsIgnoreCase("Oasis of Isolde")) {
+                System.out.println("You rest by the crystal-clear waters and feel your strength returning.");
+                player.heal(20); // This requires a heal method in Player
+            } else {
+                System.out.println("You can only rest at the Oasis of Isolde.");
+            }
+            break;
 
             case "perform ritual":
                 if (!ritualPerformed) {
