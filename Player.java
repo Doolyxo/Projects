@@ -45,7 +45,7 @@ public class Player {
     public void attackEntity() {
         System.out.println(name + " attacks the ancient entity with bravery.");
     }
-    Public void heal(int amount) {
+    public void heal(int amount) {
         health += amount;
         if (health > 100) { // assuming 100 is the max health
             health = 100;
