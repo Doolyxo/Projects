@@ -22,7 +22,7 @@ public class GameManager {
 
         // Initialize Helio with interaction phrases
         helio = new Character("Helio Umetris", 100, "A wise adviser skilled in elemental magic.",
-                new String[] {
+                new String[]{
                         "Stay vigilant; the ruins are full of hidden dangers.",
                         "Use your strength wisely, Elara. It will guide us to victory.",
                         "The entity is restless; we must act soon."
@@ -30,7 +30,7 @@ public class GameManager {
 
         // Initialize Mylo with interaction phrases
         mylo = new Character("Mylo Yasujiro", 100, "A visiting dignitary with vast knowledge of the world.",
-                new String[] {
+                new String[]{
                         "These ruins are treacherous, but their mysteries call to us. Stay vigilant—one wrong step and we'll be just another story lost to the sands.",
                         "I've seen places like this before. Stay alert.",
                         "If we make it through this, stories of this day will be legendary."
