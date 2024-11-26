@@ -6,13 +6,12 @@ public class Player {
     private int health;
     private List<Item> inventory;
 
-
     public Player(String name, int health) {
         this.name = name;
         this.health = health;
         this.inventory = new ArrayList<>();
-
     }
+
     public void addToInventory(Item item) {
         inventory.add(item);
         System.out.println(item.getName() + " has been added to your inventory.");
@@ -22,10 +21,10 @@ public class Player {
         return inventory.stream().anyMatch(item -> item.getName().equalsIgnoreCase(itemName));
     }
 
-    public void useItem(String itemName) { // new
+    public void useItem(String itemName) {
         for (Item item : inventory) {
             if (item.getName().equalsIgnoreCase(itemName)) {
-                item.use(); // Logic for using the item
+                item.use();
                 inventory.remove(item);
                 System.out.println(itemName + " has been used.");
                 return;
@@ -33,7 +32,7 @@ public class Player {
         }
         System.out.println("Item not found in inventory.");
     }
-    
+
     public void investigateRuins() {
         System.out.println(name + " investigates the ruins and finds some ancient artifacts.");
     }
@@ -45,11 +44,12 @@ public class Player {
     public void attackEntity() {
         System.out.println(name + " attacks the ancient entity with bravery.");
     }
+
     public void heal(int amount) {
         health += amount;
-        if (health > 100) { // assuming 100 is the max health
+        if (health > 100) {
             health = 100;
         }
-        System.out.println(name + " 's health is now " + health);
+        System.out.println(name + "'s health is now " + health);
+    }
 }
-
