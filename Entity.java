@@ -26,7 +26,7 @@ public class Entity {
     }
 
     public int attack()  {
-        System.out.println(name + " attacks with power " + attackPower + "!" );
+        System.out.println(name + " attakcs with power " + attackPower + "!" );
         return attackPower;
     }
 }
