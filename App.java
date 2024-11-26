@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 // Since game manager already tracks and manages the loop with isGameRunning
 // The app class can just delegate the game loop entirely to game manager
 public class App {
