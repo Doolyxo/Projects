@@ -157,7 +157,10 @@ public class GameManager {
                 System.out.println("Unknown command.");
                 break;
         }
+    
+    
     }
+    
 }
 
 // private void displayEnding(String endingType) {
@@ -176,3 +179,55 @@ public class GameManager {
  //   }
  //   isGameRunning = false; // End the game
 // }
+
+
+
+//This can be placed near or below the processCommand()
+//private void executeVerbNounNoun(String verb, String noun1, String noun2) {
+  //  if (verb.equalsIgnoreCase("use") && noun1.equalsIgnoreCase("crown") && noun2.equalsIgnoreCase("foresight")) {
+    //    if (player.hasItem("Crown of Foresight")) {
+      //      player.useItem("Crown of Foresight");
+        //    System.out.println("The crown reveals a vision of possible futures.");
+        //} else {
+          //  System.out.println("You don't have the Crown of Foresight.");
+        //}
+    //} else if (verb.equalsIgnoreCase("attack") && noun1.equalsIgnoreCase("ancient") && noun2.equalsIgnoreCase("entity")) {
+      //  if (ritualPerformed && ruinsInvestigated) {
+        //    System.out.println("You attack the ancient entity!");
+          //  player.attackEntity();
+            //entityDefeated = true;
+            //displayEnding("kingdomSaved");
+       // } else {
+         //   System.out.println("You are not prepared to face the entity!");
+           // displayEnding("fallOfAridia");
+        //}
+   // } else if (verb.equalsIgnoreCase("consult") && noun1.equalsIgnoreCase("helio") && noun2.equalsIgnoreCase("wisdom")) {
+     //   helio.interact();
+   // } else {
+     //   System.out.println("Invalid complex command.");
+//    }
+//}
+
+// Modify processCommand to Call executeVerbNounNoun: Update the processCommand() method in GameManager to recognize three-word commands and delegate them to executeVerbNounNoun().
+//private void processCommand(String command, Scanner scanner) {
+  //  String[] words = command.split(" ");
+    //if (words.length == 3) {
+        // Delegate three-word commands to executeVerbNounNoun
+      //  executeVerbNounNoun(words[0], words[1], words[2]);
+    //} else {
+      //  switch (command.toLowerCase()) {
+        //    case "travel":
+                // Travel logic...
+          //      break;
+            //case "rest":
+                // Rest logic...
+              //  break;
+            //case "quit":
+              //  isGameRunning = false;
+                //System.out.println("Thank you for playing!");
+                //break;
+            //default:
+              //  System.out.println("Unknown command. Type 'menu' for options.");
+      //  }
+    //}
+//}
