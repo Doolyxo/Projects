@@ -1,3 +1,9 @@
+// I added displayEnding()
+// I added Three complex commands in (verb-noun-noun format). 
+// It is handled in the processCommand() method using (executeVerbNounNoun() method
+// Updated processCommand() to call executeVerbNounNoun() for three-word commands
+
+
 // App section start
 
 import java.util.*;
