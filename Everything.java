@@ -16,7 +16,7 @@ public class Character {
     private String name;
     private int health;
     private String description;
-    private String[] dialogues; // New field to store interaction phrases
+    private String[] dialogues; // Stores interaction phrases
 
     // Constructor with interaction phrases
     public Character(String name, int health, String description, String[] dialogues) {
@@ -41,9 +41,9 @@ public class Character {
         return description;
     }
 
-    // Getter for dialogues
-    public String[] getDialogues() {
-        return dialogues;
+    // Setter for dialogues (optional, to update or modify dialogues)
+    public void setDialogues(String[] dialogues) {
+        this.dialogues = dialogues;
     }
 
     // Method to simulate taking damage
@@ -57,7 +57,17 @@ public class Character {
         }
     }
 
-    // Method for speaking a specific dialogue
+    // Randomly selects and speaks a dialogue
+    public void speakRandomPhrase() {
+        if (dialogues != null && dialogues.length > 0) {
+            int randomIndex = (int) (Math.random() * dialogues.length);
+            System.out.println(name + ": \"" + dialogues[randomIndex] + "\"");
+        } else {
+            System.out.println(name + " has nothing to say.");
+        }
+    }
+
+    // Method to speak a specific dialogue by index
     public void speak(int dialogueIndex) {
         if (dialogues != null && dialogueIndex >= 0 && dialogueIndex < dialogues.length) {
             System.out.println(name + ": \"" + dialogues[dialogueIndex] + "\"");
@@ -71,6 +81,7 @@ public class Character {
         return health > 0;
     }
 }
+
 // Character section finish
 
 // entity section start
