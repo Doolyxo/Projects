@@ -159,3 +159,20 @@ public class GameManager {
         }
     }
 }
+
+// private void displayEnding(String endingType) {
+//    switch (endingType) {
+//        case "kingdomSaved":
+ //           System.out.println("The kingdom is saved! Elara's courage and wisdom have brought prosperity.");
+ //           break;
+//     case "fallOfAridia":
+ //           System.out.println("The kingdom falls into despair as the ancient entity prevails.");
+ //           break;
+  //      case "destructionAndRebirth":
+   //         System.out.println("The entity is defeated, but at a great cost. A new era begins.");
+   //         break;
+    //    default:
+       //     System.out.println("An unknown fate has occurred.");
+ //   }
+ //   isGameRunning = false; // End the game
+// }
