@@ -1,9 +1,3 @@
-// I added displayEnding()
-// I added Three complex commands in (verb-noun-noun format). 
-// It is handled in the processCommand() method using (executeVerbNounNoun() method
-// Updated processCommand() to call executeVerbNounNoun() for three-word commands
-
-
 import java.util.*;
 
 public class GameManager {
@@ -12,6 +6,7 @@ public class GameManager {
     private boolean ritualPerformed;
     private boolean entityDefeated;
     private boolean ruinsInvestigated;
+    private boolean keyFound; // Track if the key has been found
     private Character helio;
     private Character mylo;
     private Map<String, Location> locations;
@@ -23,42 +18,41 @@ public class GameManager {
         ritualPerformed = false;
         entityDefeated = false;
         ruinsInvestigated = false;
+        keyFound = false; // Initialize as false
 
         initializeLocations();
 
-        // Initialize Helio with interaction phrases
-        helio = new Character("Helio Umetris", 100, "A wise adviser skilled in elemental magic.");
-         new String[]{
+        helio = new Character("Helio Umetris", 100, "A wise adviser skilled in elemental magic.",
+                new String[]{
                         "Stay vigilant; the ruins are full of hidden dangers.",
                         "Use your strength wisely, Elara. It will guide us to victory.",
                         "The entity is restless; we must act soon."
                 });
-        // Initialize Mylo with interaction phrases
-        mylo = new Character("Mylo Yasujiro", 100, "A visiting dignitary with vast knowledge of the world.");
-       new String[]{
+
+        mylo = new Character("Mylo Yasujiro", 100, "A visiting dignitary with vast knowledge of the world.",
+                new String[]{
                         "These ruins are treacherous, but their mysteries call to us. Stay vigilant—one wrong step and we'll be just another story lost to the sands.",
                         "I've seen places like this before. Stay alert.",
                         "If we make it through this, stories of this day will be legendary."
                 });
     }
-    
-     private void initializeLocations() {
-        locations = new HashMap<>();
 
-        // Define locations
+    private void initializeLocations() {
+        locations = new HashMap<>();
         Location royalPalace = new Location("Royal Palace", "The center of the kingdom, where political decisions are made.");
         Location oasisOfIsolde = new Location("Oasis of Isolde", "A sanctuary of life amidst the arid desert.");
         Location eternalDunes = new Location("Eternal Dunes", "The vast deserts of Aridia.");
-        Location desertRuins = new Location("Undiscovered Desert Ruins", "Hidden throughout the desert, these ruins contain artifacts.");
+        Location desertRuins = new Location("Desert Ruins", "Hidden throughout the desert, these ruins contain artifacts.");
 
-        // Add locations to the map
+        // Add items to the Desert Ruins
+        desertRuins.addItem(new Item("Ancient Key", "A mysterious key needed to unlock an ancient power.", true));
+
         locations.put("royal palace", royalPalace);
         locations.put("oasis of isolde", oasisOfIsolde);
         locations.put("eternal dunes", eternalDunes);
         locations.put("desert ruins", desertRuins);
 
-        // Set initial location
-        currentLocation = royalPalace;
+        currentLocation = royalPalace; // Start in the Royal Palace
     }
 
     public void startGame() {
@@ -84,7 +78,7 @@ public class GameManager {
         if (!ritualPerformed) {
             System.out.println("- perform ritual: Begin a powerful ritual to prepare for the battle.");
         }
-        if (ruinsInvestigated && ritualPerformed) {
+        if (ruinsInvestigated && ritualPerformed && keyFound) {
             System.out.println("- attack ancient entity: Attempt to defeat the ancient entity.");
         }
         System.out.println("- consult with helio: Seek advice from Helio.");
@@ -95,11 +89,12 @@ public class GameManager {
     }
 
     private void processCommand(String command, Scanner scanner) {
+        command = command.toLowerCase().trim();
         String[] words = command.split(" ");
         if (words.length == 3) {
             executeVerbNounNoun(words[0], words[1], words[2]);
         } else {
-            switch (command.toLowerCase()) {
+            switch (command) {
                 case "travel":
                     if (currentLocation == null) {
                         System.out.println("Error: Current location is not set.");
@@ -111,6 +106,14 @@ public class GameManager {
                     if (locations.containsKey(destination)) {
                         currentLocation = locations.get(destination);
                         currentLocation.enterLocation();
+                        if (destination.equals("desert ruins") && !keyFound) {
+                            System.out.println("You have found the Ancient Key in the ruins!");
+                            Item key = currentLocation.getItem("Ancient Key");
+                            if (key != null) {
+                                player.addToInventory(key);
+                                keyFound = true; // Automatically mark the key as found
+                            }
+                        }
                     } else {
                         System.out.println("Unknown location.");
                     }
@@ -127,15 +130,6 @@ public class GameManager {
                     }
                     break;
 
-                case "rest":
-                    if (currentLocation != null && currentLocation.getName().equalsIgnoreCase("Oasis of Isolde")) {
-                        System.out.println("You rest by the crystal-clear waters and feel your strength returning.");
-                        player.heal(20);
-                    } else {
-                        System.out.println("You can only rest at the Oasis of Isolde.");
-                    }
-                    break;
-
                 case "perform ritual":
                     if (!ritualPerformed) {
                         System.out.println("You begin a powerful ritual...");
@@ -146,8 +140,6 @@ public class GameManager {
                         System.out.println("You have already performed the ritual.");
                     }
                     break;
-
-                    
 
                 case "quit":
                     isGameRunning = false;
@@ -170,7 +162,9 @@ public class GameManager {
                 System.out.println("You don't have the Crown of Foresight.");
             }
         } else if (verb.equalsIgnoreCase("attack") && noun1.equalsIgnoreCase("ancient") && noun2.equalsIgnoreCase("entity")) {
-            if (ritualPerformed && ruinsInvestigated) {
+            if (!keyFound) {
+                System.out.println("You need the Ancient Key to fight the entity!");
+            } else if (ritualPerformed && ruinsInvestigated) {
                 System.out.println("You attack the ancient entity!");
                 player.attackEntity();
                 entityDefeated = true;
@@ -179,8 +173,6 @@ public class GameManager {
                 System.out.println("You are not prepared to face the entity!");
                 displayEnding("fallOfAridia");
             }
-        } else if (verb.equalsIgnoreCase("consult") && noun1.equalsIgnoreCase("helio") && noun2.equalsIgnoreCase("wisdom")) {
-            helio.speak("Elara, trust your instincts. The fate of the kingdom depends on you.");
         } else {
             System.out.println("Invalid complex command.");
         }
@@ -205,11 +197,6 @@ public class GameManager {
                 System.out.println("An unexpected fate has occurred.");
                 break;
         }
-        isGameRunning = false; // End the game
-    }
-
-    public static void main(String[] args) {
-        GameManager game = new GameManager();
-        game.startGame();
+        isGameRunning = false;
     }
 }
