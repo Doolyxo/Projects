@@ -44,8 +44,9 @@ public class GameManager {
         Location eternalDunes = new Location("Eternal Dunes", "The vast deserts of Aridia.");
         Location desertRuins = new Location("Desert Ruins", "Hidden throughout the desert, these ruins contain artifacts.");
 
-        // Add items to the Desert Ruins
+        // Add items to the Desert Ruins and Oasis of Isolde
         desertRuins.addItem(new Item("Ancient Key", "A mysterious key needed to unlock an ancient power.", true));
+        oasisOfIsolde.addItem(new Item("Crown of Foresight", "A magical artifact that reveals possible futures.", true));
 
         locations.put("royal palace", royalPalace);
         locations.put("oasis of isolde", oasisOfIsolde);
@@ -81,6 +82,7 @@ public class GameManager {
         if (ruinsInvestigated && ritualPerformed && keyFound) {
             System.out.println("- attack ancient entity: Attempt to defeat the ancient entity.");
         }
+        System.out.println("- attack ancient entity");
         System.out.println("- consult with helio: Seek advice from Helio.");
         System.out.println("- consult with mylo: Seek Mylo's perspective.");
         System.out.println("- use crown foresight: Use the Crown of Foresight if available.");
@@ -112,6 +114,12 @@ public class GameManager {
                             if (key != null) {
                                 player.addToInventory(key);
                                 keyFound = true; // Automatically mark the key as found
+                            }
+                        } else if (destination.equals("oasis of isolde") && !player.hasItem("Crown of Foresight")) {
+                            System.out.println("You have found the Crown of Foresight at the oasis!");
+                            Item crown = currentLocation.getItem("Crown of Foresight");
+                            if (crown != null) {
+                                player.addToInventory(crown);
                             }
                         }
                     } else {
@@ -173,6 +181,10 @@ public class GameManager {
                 System.out.println("You are not prepared to face the entity!");
                 displayEnding("fallOfAridia");
             }
+        } else if (verb.equalsIgnoreCase("consult") && noun1.equalsIgnoreCase("with") && noun2.equalsIgnoreCase("helio")) {
+            helio.speak(0); // Display the first dialogue for Helio
+        } else if (verb.equalsIgnoreCase("consult") && noun1.equalsIgnoreCase("with") && noun2.equalsIgnoreCase("mylo")) {
+            mylo.speak(1); // Display the second dialogue for Mylo
         } else {
             System.out.println("Invalid complex command.");
         }
