@@ -172,15 +172,20 @@ public class GameManager {
         } else if (verb.equalsIgnoreCase("attack") && noun1.equalsIgnoreCase("ancient") && noun2.equalsIgnoreCase("entity")) {
             if (!keyFound) {
                 System.out.println("You need the Ancient Key to fight the entity!");
-            } else if (ritualPerformed && ruinsInvestigated) {
-                System.out.println("You attack the ancient entity!");
-                player.attackEntity();
-                entityDefeated = true;
-                displayEnding("kingdomSaved");
-            } else {
-                System.out.println("You are not prepared to face the entity!");
-                displayEnding("fallOfAridia");
-            }
+           } else if (ritualPerformed && ruinsInvestigated) {
+    if (player.hasItem("Crown of Foresight")) {
+        System.out.println("You perform a complete ritual and attack the ancient entity!");
+        player.attackEntity();
+        displayEnding("rebirth"); // Trigger rebirth ending
+    } else if (entityWeakened) {
+        System.out.println("Despite partial preparation, the entity overwhelms. A new era begins.");
+        displayEnding("destructionAndRebirth");
+    } else {
+        System.out.println("The entity's power is too great. The kingdom falls.");
+        displayEnding("fallOfAridia");
+    }
+}
+
         } else if (verb.equalsIgnoreCase("consult") && noun1.equalsIgnoreCase("with") && noun2.equalsIgnoreCase("helio")) {
             helio.speak(0); // Display the first dialogue for Helio
         } else if (verb.equalsIgnoreCase("consult") && noun1.equalsIgnoreCase("with") && noun2.equalsIgnoreCase("mylo")) {
