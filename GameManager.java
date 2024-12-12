@@ -44,14 +44,41 @@ public class GameManager {
         Location eternalDunes = new Location("Eternal Dunes", "The vast deserts of Aridia.");
         Location desertRuins = new Location("Desert Ruins", "Hidden throughout the desert, these ruins contain artifacts.");
 
-        // Add items to the Desert Ruins
         // Add items to the Desert Ruins and Oasis of Isolde
         desertRuins.addItem(new Item("Ancient Key", "A mysterious key needed to unlock an ancient power.", true));
         oasisOfIsolde.addItem(new Item("Crown of Foresight", "A magical artifact that reveals possible futures.", true));
 
         locations.put("royal palace", royalPalace);
         locations.put("oasis of isolde", oasisOfIsolde);
-@@ -81,6 +82,7 @@
+        locations.put("eternal dunes", eternalDunes);
+        locations.put("desert ruins", desertRuins);
+
+        currentLocation = royalPalace; // Start in the Royal Palace
+    }
+
+    public void startGame() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Welcome to Desert Kings and Secrets!");
+            currentLocation.enterLocation();
+            showMenu();
+
+            while (isGameRunning) {
+                System.out.print("Enter command: ");
+                String command = scanner.nextLine();
+                processCommand(command, scanner);
+            }
+        }
+    }
+
+    private void showMenu() {
+        System.out.println("\nAvailable Commands:");
+        System.out.println("- travel: Move to a different location.");
+        if (!ruinsInvestigated) {
+            System.out.println("- investigate ruins: Search the ancient ruins for clues and items.");
+        }
+        if (!ritualPerformed) {
+            System.out.println("- perform ritual: Begin a powerful ritual to prepare for the battle.");
+        }
         if (ruinsInvestigated && ritualPerformed && keyFound) {
             System.out.println("- attack ancient entity: Attempt to defeat the ancient entity.");
         }
@@ -59,7 +86,32 @@ public class GameManager {
         System.out.println("- consult with helio: Seek advice from Helio.");
         System.out.println("- consult with mylo: Seek Mylo's perspective.");
         System.out.println("- use crown foresight: Use the Crown of Foresight if available.");
-@@ -113,6 +115,12 @@
+        System.out.println("- menu or help: Show this list of commands.");
+        System.out.println("- quit: Exit the game.\n");
+    }
+
+    private void processCommand(String command, Scanner scanner) {
+        command = command.toLowerCase().trim();
+        String[] words = command.split(" ");
+        if (words.length == 3) {
+            executeVerbNounNoun(words[0], words[1], words[2]);
+        } else {
+            switch (command) {
+                case "travel":
+                    if (currentLocation == null) {
+                        System.out.println("Error: Current location is not set.");
+                        break;
+                    }
+                    System.out.println("Where would you like to travel?");
+                    System.out.println("Available locations: " + locations.keySet());
+                    String destination = scanner.nextLine().toLowerCase();
+                    if (locations.containsKey(destination)) {
+                        currentLocation = locations.get(destination);
+                        currentLocation.enterLocation();
+                        if (destination.equals("desert ruins") && !keyFound) {
+                            System.out.println("You have found the Ancient Key in the ruins!");
+                            Item key = currentLocation.getItem("Ancient Key");
+                            if (key != null) {
                                 player.addToInventory(key);
                                 keyFound = true; // Automatically mark the key as found
                             }
@@ -72,7 +124,60 @@ public class GameManager {
                         }
                     } else {
                         System.out.println("Unknown location.");
-@@ -173,30 +181,34 @@
+                    }
+                    break;
+
+                case "investigate ruins":
+                    if (!ruinsInvestigated) {
+                        System.out.println("You search the ancient ruins...");
+                        player.investigateRuins();
+                        ruinsInvestigated = true;
+                        System.out.println("The ruins are now investigated.");
+                    } else {
+                        System.out.println("You have already investigated the ruins.");
+                    }
+                    break;
+
+                case "perform ritual":
+                    if (!ritualPerformed) {
+                        System.out.println("You begin a powerful ritual...");
+                        player.performRitual();
+                        ritualPerformed = true;
+                        System.out.println("The ritual has been completed.");
+                    } else {
+                        System.out.println("You have already performed the ritual.");
+                    }
+                    break;
+
+                case "quit":
+                    isGameRunning = false;
+                    System.out.println("Thank you for playing!");
+                    break;
+
+                default:
+                    System.out.println("Unknown command.");
+                    break;
+            }
+        }
+    }
+
+    private void executeVerbNounNoun(String verb, String noun1, String noun2) {
+        if (verb.equalsIgnoreCase("use") && noun1.equalsIgnoreCase("crown") && noun2.equalsIgnoreCase("foresight")) {
+            if (player.hasItem("Crown of Foresight")) {
+                player.useItem("Crown of Foresight");
+                System.out.println("The crown reveals a vision of possible futures.");
+            } else {
+                System.out.println("You don't have the Crown of Foresight.");
+            }
+        } else if (verb.equalsIgnoreCase("attack") && noun1.equalsIgnoreCase("ancient") && noun2.equalsIgnoreCase("entity")) {
+            if (!keyFound) {
+                System.out.println("You need the Ancient Key to fight the entity!");
+            } else if (ritualPerformed && ruinsInvestigated) {
+                System.out.println("You attack the ancient entity!");
+                player.attackEntity();
+                entityDefeated = true;
+                displayEnding("kingdomSaved");
+            } else {
                 System.out.println("You are not prepared to face the entity!");
                 displayEnding("fallOfAridia");
             }
@@ -85,6 +190,30 @@ public class GameManager {
         }
     }
 
+
+    private void determineEnding() {
+        boolean hasCrown = player.hasItem("Crown of Foresight");
+
+        if (hasCrown && ritualPerformed) {
+            displayEnding("kingdomSaved");
+        } else if (hasCrown || ritualPerformed) {
+            displayEnding("destructionAndRebirth");
+        } else {
+            displayEnding("fallOfAridia");
+        }
+    }
+
+    private void executeVerbNounNoun(String verb, String noun1, String noun2) {
+        if (verb.equalsIgnoreCase("attack") && noun1.equalsIgnoreCase("ancient") && noun2.equalsIgnoreCase("entity")) {
+            if (!keyFound) {
+                System.out.println("You need the Ancient Key to fight the entity!");
+            } else {
+                determineEnding();
+            }
+        } else {
+            System.out.println("Invalid complex command.");
+        }
+    }
     private void displayEnding(String endingType) {
         switch (endingType) {
             case "kingdomSaved":
