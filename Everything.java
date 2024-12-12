@@ -119,8 +119,6 @@ public class Entity {
 // Game manager start
 import java.util.*;
 
-import java.util.*;
-
 public class GameManager {
     private Player player;
     private boolean isGameRunning;
@@ -324,17 +322,7 @@ public class GameManager {
         }
     }
 
-    private void executeVerbNounNoun(String verb, String noun1, String noun2) {
-        if (verb.equalsIgnoreCase("attack") && noun1.equalsIgnoreCase("ancient") && noun2.equalsIgnoreCase("entity")) {
-            if (!keyFound) {
-                System.out.println("You need the Ancient Key to fight the entity!");
-            } else {
-                determineEnding();
-            }
-        } else {
-            System.out.println("Invalid complex command.");
-        }
-    }
+
     private void displayEnding(String endingType) {
         switch (endingType) {
             case "kingdomSaved":
@@ -357,8 +345,6 @@ public class GameManager {
         isGameRunning = false;
     }
 }
-
-
 //game manager finish
 
 // item section start
